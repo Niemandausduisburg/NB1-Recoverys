@@ -32,5 +32,5 @@
 /vendor_image    emmc              /dev/block/bootdevice/by-name/vendor     flags=slotselect
 
 # Removable storage
-/usb-otg         auto              /dev/block/sda1         /dev/block/sda   flags=removable;storage;display="USB OTG"
-/sdcard1         auto              /dev/block/mmcblk1p1                     flags=display="MicroSD";storage;wipeingui;removable
+/external_sd     auto              /dev/block/mmcblk0p1                     flags=removable;storage;wipeingui;andsec;display="Micro SD card"
+/usb-otg         auto              /dev/block/sdg1                          flags=removable;storage;display="USB OTG"
