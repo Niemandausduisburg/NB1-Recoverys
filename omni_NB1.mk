@@ -19,15 +19,19 @@ LOCAL_PATH := device/nokia/NB1
 # Release name
 PRODUCT_RELEASE_NAME := NB1
 
-# Define hardware platform
-PRODUCT_PLATFORM := msm8998
-
 $(call inherit-product, build/target/product/aosp_base.mk)
 
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/omni/config/common.mk)
 
 # A/B support
+AB_OTA_UPDATER := true
+
+AB_OTA_PARTITIONS += \
+    boot \
+    system \
+    vendor
+
 PRODUCT_PACKAGES += \
     otapreopt_script \
     update_engine \
@@ -47,22 +51,35 @@ PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-impl-wrapper.recovery \
     android.hardware.boot@1.0-impl-wrapper \
     android.hardware.boot@1.0-impl-recovery \
+    android.hardware.fastboot@1.0-impl-mock.recovery \
     bootctrl.msm8998 \
     bootctrl.msm8998.recovery \
 
 PRODUCT_HOST_PACKAGES += \
     libandroidicu
 
+# The following modules are included in debuggable builds only.
+PRODUCT_PACKAGES_DEBUG += \
+    bootctl \
+    update_engine_client
+
 # Properties for decryption
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.keystore=msm8998 \
     ro.hardware.gatekeeper=msm8998 \
-    ro.hardware.bootctrl=msm8998 \
-    ro.build.system_root_image=true
+    ro.hardware.bootctrl=msm8998
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
+
+# Partitions (listed in the file) to be wiped under recovery.
+TARGET_RECOVERY_WIPE := \
+    $(LOCAL_PATH)/recovery/root/system/etc/recovery.wipe	
+
+# Time Zone data for recovery
+PRODUCT_COPY_FILES += \
+    system/timezone/output_data/iana/tzdata:recovery/root/system/usr/share/zoneinfo/tzdata
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := NB1

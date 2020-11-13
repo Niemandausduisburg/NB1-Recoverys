@@ -1,5 +1,5 @@
 #
-# Copyright 2017 The Android Open Source Project
+# Copyright 2018 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,28 +25,35 @@
 
 LOCAL_PATH := device/nokia/NB1
 
-# Architecture
-TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-2a
-TARGET_CPU_ABI := arm64-v8a
-TARGET_CPU_ABI2 :=
-TARGET_CPU_VARIANT := cortex-a75
-
-TARGET_2ND_ARCH := arm
-TARGET_2ND_ARCH_VARIANT := armv8-2a
-TARGET_2ND_CPU_ABI := armeabi-v7a
-TARGET_2ND_CPU_ABI2 := armeabi
-TARGET_2ND_CPU_VARIANT := cortex-a75
-
-ENABLE_CPUSETS := true
-ENABLE_SCHEDBOOST := true
-
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := msm8998
 TARGET_NO_BOOTLOADER := true
 TARGET_USES_UEFI := true
 
-BUILD_BROKEN_DUP_RULES := true
+# Platform
+TARGET_BOARD_PLATFORM := msm8998
+TARGET_BOARD_PLATFORM_GPU := qcom-adreno540
+TARGET_USES_64_BIT_BINDER := true
+
+# Architecture
+TARGET_ARCH := arm64
+TARGET_ARCH_VARIANT := armv8-a
+TARGET_CPU_ABI := arm64-v8a
+TARGET_CPU_ABI2 :=
+TARGET_CPU_VARIANT := generic
+
+TARGET_2ND_ARCH := arm
+TARGET_2ND_ARCH_VARIANT := armv8-a
+TARGET_2ND_CPU_ABI := armeabi-v7a
+TARGET_2ND_CPU_ABI2 := armeabi
+TARGET_2ND_CPU_VARIANT := cortex-a9
+
+# Enable CPUSets
+ENABLE_CPUSETS := true
+ENABLE_SCHEDBOOST := true
+
+# GPT Utils
+BOARD_PROVIDES_GPTUTILS := true
 
 # Kernel
 BOARD_KERNEL_BASE        := 0x00000000
@@ -63,86 +70,61 @@ BOARD_SECOND_OFFSET      := 0x00f00000
 BOARD_KERNEL_IMAGE_NAME  := Image.gz-dtb
 TARGET_PREBUILT_KERNEL   := $(LOCAL_PATH)/prebuilt/Image.gz-dtb
 
-# Platform
-TARGET_BOARD_PLATFORM := msm8998
-TARGET_BOARD_PLATFORM_GPU := qcom-adreno540
-QCOM_BOARD_PLATFORMS += msm8998
-
 # Partitions
-BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3221225472
 BOARD_VENDORIMAGE_PARTITION_SIZE := 1073741824
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 54429687808
-BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
-TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_USERIMAGES_USE_F2FS := true
-
-TARGET_NO_KERNEL := false
-TARGET_NO_RECOVERY := false
-BOARD_USES_RECOVERY_AS_BOOT := true
-BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
-
-# Partitions (listed in the file) to be wiped under recovery.
-TARGET_RECOVERY_WIPE := $(LOCAL_PATH)/recovery.wipe
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery.fstab
+BOARD_FLASH_BLOCK_SIZE := 131072
 
 # Recovery
-BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_SELECT_BUTTON := true
-
-# TWRP specific build flags
-BOARD_HAS_NO_REAL_SDCARD := true
-RECOVERY_SDCARD_ON_DATA := true
-TARGET_RECOVERY_QCOM_RTC_FIX := true
-TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
-TW_EXCLUDE_DEFAULT_USB_INIT := true
-TW_EXCLUDE_SUPERSU := true
-TW_EXTRA_LANGUAGES := true
-TW_INCLUDE_NTFS_3G := true
-AB_OTA_UPDATER := true
-TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_MAX_BRIGHTNESS := 1023
-TW_DEFAULT_BRIGHTNESS := 420
-TW_Y_OFFSET := 80
-TW_H_OFFSET := -80
-TW_THEME := portrait_hdpi
-TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0
-TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
-TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
-TW_NO_SCREEN_BLANK := true
-TW_USE_TOOLBOX := true
-
-# Use mke2fs to create ext4 images
+BOARD_HAS_LARGE_FILESYSTEM := true
+TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
 TARGET_USES_MKE2FS := true
 
-# A/B updater updatable partitions list. Keep in sync with the partition list
-# with "_a" and "_b" variants in the device. Note that the vendor can add more
-# more partitions to this list for the bootloader and radio.
-AB_OTA_PARTITIONS += \
-    boot \
-    system \
-    vendor 
+# Filesystem
+TARGET_NO_KERNEL := false
+BOARD_USES_RECOVERY_AS_BOOT := true
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+AB_OTA_UPDATER := true
+BOARD_SUPPRESS_SECURE_ERASE := true
+RECOVERY_NEED_SELINUX_FIX := true
+RECOVERY_SDCARD_ON_DATA := true
 
-# Encryption
-VENDOR_SECURITY_PATCH := 2099-12-31
-PLATFORM_SECURITY_PATCH := $(VENDOR_SECURITY_PATCH)
+# Crypto
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
+PLATFORM_VERSION := 16.1.0
+PLATFORM_SECURITY_PATCH := 2025-12-31
 
-# Extras
-BOARD_PROVIDES_GPTUTILS := true
-BOARD_SUPPRESS_SECURE_ERASE := true
-TW_USE_LEDS_HAPTICS := true
-TW_EXCLUDE_TWRPAPP := true
-TW_INCLUDE_REPACKTOOLS := true
+# TWRP specific build flags
+TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
+TW_DEFAULT_BRIGHTNESS := 80
+TW_DEFAULT_LANGUAGE := en
+TW_EXTRA_LANGUAGES := true
 TW_HAS_EDL_MODE := true
+TW_EXTERNAL_STORAGE_MOUNT_POINT := external_sd
+TW_EXTERNAL_STORAGE_PATH := /external_sd
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+TW_IGNORE_MISC_WIPE_DATA := true
+TW_INCLUDE_FBE := true
+TW_INCLUDE_NTFS_3G := true
+TW_INCLUDE_REPACKTOOLS := true
+TW_INPUT_BLACKLIST := hbtp_vm
+TW_INTERNAL_STORAGE_MOUNT_POINT := sdcard
+TW_INTERNAL_STORAGE_PATH := /data/media/0
+TW_MAX_BRIGHTNESS := 255
+TW_NO_SCREEN_BLANK := true
+TW_THEME := portrait_hdpi
+TW_USE_TOOLBOX := true
+
+# Debug flags
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
-TW_EXCLUDE_TWRPAPP := true
-TW_NO_USB_STORAGE := true
-PLATFORM_VERSION := 16.1.0
 
 # Workaround for error copying vendor files to recovery ramdisk
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_PARTITION_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
