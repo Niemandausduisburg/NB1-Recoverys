@@ -57,6 +57,13 @@ service boot-1-0 /sbin/android.hardware.boot@1.0-service
     disabled
     seclabel u:r:recovery:s0
 
+service patchlevel /sbin/patchlevel.sh
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
 service servicemanager /system/bin/servicemanager
     user root
     group root readproc
@@ -108,7 +115,7 @@ on init
     setprop ro.hardware.bootctrl msm8998
     setprop ro.build.system_root_image true
     start time_daemon
-    setprop crypto.ready 1
+    start patchlevel
 
 on property:crypto.ready=1
     start hwservicemanager
