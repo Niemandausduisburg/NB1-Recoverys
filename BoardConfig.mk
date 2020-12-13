@@ -101,6 +101,7 @@ RECOVERY_SDCARD_ON_DATA := true
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 PLATFORM_SECURITY_PATCH := 2025-12-31
+PLATFORM_VERSION := 16.1.0
 
 # TWRP specific build flags
 TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
