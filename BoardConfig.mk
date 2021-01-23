@@ -127,3 +127,18 @@ TARGET_USES_LOGD := true
 # Workaround for error copying vendor files to recovery ramdisk
 BOARD_VENDORIMAGE_PARTITION_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
+
+# SHRP Setup
+SHRP_DEVICE_CODE := NB1
+SHRP_PATH := device/nokia/$(SHRP_DEVICE_CODE)
+SHRP_MAINTAINER := Niemandausduisburg
+SHRP_REC_TYPE := Treble
+SHRP_DEVICE_TYPE := A/B
+SHRP_REC := /dev/block/bootdevice/by-name/boot
+SHRP_EDL_MODE := 1
+SHRP_INTERNAL := /sdcard
+SHRP_EXTERNAL := /external_sd
+SHRP_OTG := /usb_otg
+SHRP_AB := true
+SHRP_EXPRESS := true
+#INC_IN_REC_MAGISK := true
